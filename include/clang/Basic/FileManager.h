@@ -40,6 +40,7 @@ class MemoryBuffer;
 namespace clang {
 
 class FileSystemStatCache;
+class HeaderSearch;
 
 /// \brief Cached information about one directory (either on disk or in
 /// the virtual file system).
@@ -58,8 +59,6 @@ public:
 /// If the 'File' member is valid, then this FileEntry has an open file
 /// descriptor for the file.
 class FileEntry {
-  friend class FileManager;
-
   StringRef Name;             // Name of the file.
   std::string RealPathName;   // Real path to the file; could be empty.
   off_t Size;                 // File size in bytes.
@@ -73,6 +72,8 @@ class FileEntry {
 
   /// \brief The open file, if it is owned by the \p FileEntry.
   mutable std::unique_ptr<vfs::File> File;
+  friend class FileManager;
+  friend class HeaderSearch;
 
 public:
   FileEntry()
